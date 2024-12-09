@@ -116,7 +116,7 @@ function updateTotals() {
     for(let item = 0; item < items.length; item++){
      const itemAmount = items[item].querySelector(".expense-amount")
      //remover caracteres nai numericos e substitui virgula pelo ponto
-     let value = itemAmount.textContent.replace(/[^\d]/g, "").replace(",", ".")
+     let value = itemAmount.textContent.replace(/[^\d,]/g, "").replace(",", ".")
 
      // converte o valor para float
      value = parseFloat(value)
@@ -128,7 +128,18 @@ function updateTotals() {
      // incrementar o valor total
      total += Number(value)
     }
-    expenseTotal.textContent = total
+    
+    // criar a span para adicionar o R$ formatado
+    const symbolBRL = document.createElement("small")
+    symbolBRL.textContent = "R$"
+
+    // formata o valor e remove o R$ que sera exibido pelo small com estilo customizado
+    total = formatarCurrencyBRL(total).toUpperCase().replace("R$", "")
+
+    expenseTotal.innerHTML = ""
+
+    expenseTotal.append(symbolBRL, total)
+
   } catch (error) {
     alert("nao foi possivel atualizar os totais");
   }
